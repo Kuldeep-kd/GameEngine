@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <string>
+#include"../Engine/Include/World.h"
 
 //template <typename T>
 //std::string ToString(T x)
@@ -13,11 +14,10 @@
 
 int main()
 {
+	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pendulum");
 	window.setFramerateLimit(60);
-	sf::CircleShape shape(50.f);
-	shape.setFillColor(sf::Color::Blue);
-	shape.setPosition(950, 440);
+	sf::CircleShape shape[10];
 	sf::Font font;
 	font.loadFromFile("Ubuntu-Light.ttf");
 	sf::Text PosText;
@@ -25,13 +25,19 @@ int main()
 	PosText.setPosition(10, 10);
 	PosText.setCharacterSize(50);
 	PosText.setFillColor(sf::Color::Cyan);
+	World world;
+	for (int i = 0; i < 10; i++)
+	{
+		shape[i].setRadius(5 + rand()%10);
+		shape[i].setFillColor(sf::Color::Green);
+		shape[i].setPosition(950, 440);
+		Entity* e = new Entity();
+		e->Position(rand()%1910, rand()%150);
+		e->Mass = 100;
+		world.AddEntity(e);
+	}
 
-	sf::Vector2f Velocity(10, 8);
-	sf::Vector2i Position(960,440);
-	int Radius = 100;
-	float dx=2,dy=2,dt=0.015;
-	sf::Time PrevTime = sf::Time::Time();
-
+	int Radius = 100, FrameNo=0;
 
 	while (window.isOpen())
 	{
@@ -42,14 +48,16 @@ int main()
 				window.close();
 		}
 		
-		PosText.setString("x: "+ std::to_string(shape.getPosition().x) + "," + "y: " + std::to_string(shape.getPosition().y));
+		PosText.setString("Frame No" + std::to_string(FrameNo++ % 60));
 		
-		
-		shape.setPosition(shape.getPosition() + Velocity * dt);
+		world.Step(1);
+		for (int i=0;i < world.GetEntities().size(); i++)
+			shape[i].setPosition(world.GetEntities()[i]->Position.x,-world.GetEntities()[i]->Position.y);
 
 		window.clear();
 		window.draw(PosText);
-		window.draw(shape);
+		for(auto ball : shape)
+			window.draw(ball);
 		
 
 

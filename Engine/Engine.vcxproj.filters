@@ -29,5 +29,11 @@
     <ClInclude Include="Include\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

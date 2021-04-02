@@ -4,7 +4,6 @@
 int main()
 {
 	World world;
-	world.Init();
 	Entity* e = new Entity();
 	e->Position(10,20);
 	e->Mass = 10;
