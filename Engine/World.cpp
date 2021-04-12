@@ -17,22 +17,24 @@ World::~World()
 	}
 }
 
-
-int World::Step(int dt)
+//newDelta : param in milliseconds
+int World::Step(int newDelta)
 {
-	auto CurrentTime = std::chrono::steady_clock::now();
-	auto Duration = std::chrono::duration_cast<std::chrono::milliseconds>(CurrentTime - PreviousTime);
 	
-	//std::cout << Duration.count()<<" ";
+	SetDelta(newDelta);
 	
-	//if(Duration.count() >= 1000/60)
+	//if(Delta >= 1000/60)
 		for (Entity* entity : Entities)
 		{
 			CalcPosition(entity);
-			PreviousTime = std::chrono::steady_clock::now();
 		}
 
 	return 0;
+}
+
+void World::SetDelta(long newDelta)
+{
+	Delta.SetDelta(newDelta);
 }
 
 void World::AddEntity(Entity* NewEntity)
@@ -48,7 +50,7 @@ std::vector<Entity*> World::GetEntities()
 
 Vector2f World::CalcForce(Entity* Body)
 {
-	return Vector2f{ 0,0 };
+	return Gravity * Body->Mass;
 }
 
 ///
@@ -58,9 +60,10 @@ Vector2f World::CalcForce(Entity* Body)
 ///
 void World::CalcPosition(Entity* entity)
 {
-	Vector2f accln = Gravity / entity->Mass;//{ entity->Mass / Gravity.x , entity->Mass / Gravity.y };
-	entity->Velocity += accln * delta; //{ entity->Velocity.x + accln.x * delta, entity->Velocity.y + accln.y * delta };
-	entity->Position += entity->Velocity * delta;
+	Vector2f accln = CalcForce(entity) / entity->Mass;//{ entity->Mass / Gravity.x , entity->Mass / Gravity.y };
+	entity->Velocity += accln * Delta; //{ entity->Velocity.x + accln.x * delta, entity->Velocity.y + accln.y * delta };
+	entity->Position += entity->Velocity * Delta;
+	std::cout << accln.x<<" "<<accln.y<< " " << entity->Velocity.y<< std::endl;
 }
 
 void World::SetGravity(Vector2f NewGravity)

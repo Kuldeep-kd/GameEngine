@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <string>
+#include<chrono>
 #include"../Engine/Include/World.h"
 
 //template <typename T>
@@ -16,7 +17,7 @@ int main()
 {
 	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pendulum");
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(30);
 	sf::CircleShape shape[10];
 	sf::Font font;
 	font.loadFromFile("Ubuntu-Light.ttf");
@@ -26,6 +27,9 @@ int main()
 	PosText.setCharacterSize(50);
 	PosText.setFillColor(sf::Color::Cyan);
 	World world;
+
+	std::chrono::time_point<std::chrono::steady_clock> PreviousTime;
+
 	for (int i = 0; i < 10; i++)
 	{
 		shape[i].setRadius(5 + rand()%10);
@@ -33,14 +37,18 @@ int main()
 		shape[i].setPosition(950, 440);
 		Entity* e = new Entity();
 		e->Position(rand()%1910, rand()%150);
-		e->Mass = 100;
+		e->Mass = 10;
 		world.AddEntity(e);
 	}
 
 	int Radius = 100, FrameNo=0;
 
+	PreviousTime = std::chrono::steady_clock::now();
 	while (window.isOpen())
 	{
+		auto CurrentTime = std::chrono::steady_clock::now();
+		auto Duration = std::chrono::duration_cast<std::chrono::milliseconds>(CurrentTime - PreviousTime);
+		PreviousTime = CurrentTime; 
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -50,7 +58,7 @@ int main()
 		
 		PosText.setString("Frame No" + std::to_string(FrameNo++ % 60));
 		
-		world.Step(1);
+		world.Step(Duration.count());
 		for (int i=0;i < world.GetEntities().size(); i++)
 			shape[i].setPosition(world.GetEntities()[i]->Position.x,-world.GetEntities()[i]->Position.y);
 

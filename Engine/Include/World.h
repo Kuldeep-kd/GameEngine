@@ -7,12 +7,11 @@
 class World
 {
 private:
-	float delta = 1;
+	Time Delta;
 	Vector2f Gravity = { 0, -9.81};
 	//TODO : Implement World Bounds
-	Vector2f Bounds;
+	Vector2f Bounds = { 0,0 };
 	std::vector<Entity*> Entities;
-	std::chrono::time_point<std::chrono::steady_clock> PreviousTime;
 public:
 
 	//////////////////////////////////////////////////////
@@ -24,6 +23,7 @@ public:
 	World(Vector2f);
 	~World();
 	int Step(int dt);
+	void SetDelta(long);
 	void AddEntity(Entity*);
 	std::vector<Entity*> GetEntities();
 	Vector2f CalcForce(Entity*);
