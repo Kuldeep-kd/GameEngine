@@ -3,7 +3,7 @@
 
 int main()
 {
-	World world;
+	/*World world;
 	Entity* e = new Entity();
 	e->Position(10,20);
 	e->Mass = 10;
@@ -11,9 +11,9 @@ int main()
 	
 	for (int i = 0; i < 10; i++)
 	{
-		world.Step(1);
+		world.Step();
 		std::cout << e->Position.x << " " << e->Position.y << std::endl;
-	}
+	}*/
 	/*Vector2f vec{ 2,2 }, vec2{ 2,2 },vec3;
 	vec3  = vec2 * vec;
 	std::cout << vec3.x << " " << vec.y;*/

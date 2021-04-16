@@ -17,7 +17,8 @@ int main()
 {
 	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pendulum");
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(60);
+	window.setVerticalSyncEnabled(true);
 	sf::CircleShape shape[10];
 	sf::Font font;
 	font.loadFromFile("Ubuntu-Light.ttf");
@@ -28,7 +29,7 @@ int main()
 	PosText.setFillColor(sf::Color::Cyan);
 	World world;
 
-	std::chrono::time_point<std::chrono::steady_clock> PreviousTime;
+	//std::chrono::time_point<std::chrono::steady_clock> PreviousTime;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -36,19 +37,19 @@ int main()
 		shape[i].setFillColor(sf::Color::Green);
 		shape[i].setPosition(950, 440);
 		Entity* e = new Entity();
-		e->Position(rand()%1910, rand()%150);
-		e->Mass = 10;
+		e->Position(rand()%1810, rand()%150);
+		e->Mass = 1;
 		world.AddEntity(e);
 	}
 
 	int Radius = 100, FrameNo=0;
 
-	PreviousTime = std::chrono::steady_clock::now();
+	//PreviousTime = std::chrono::steady_clock::now();
 	while (window.isOpen())
 	{
-		auto CurrentTime = std::chrono::steady_clock::now();
-		auto Duration = std::chrono::duration_cast<std::chrono::milliseconds>(CurrentTime - PreviousTime);
-		PreviousTime = CurrentTime; 
+		//auto CurrentTime = std::chrono::steady_clock::now();
+		//auto Duration = std::chrono::duration_cast<std::chrono::milliseconds>(CurrentTime - PreviousTime);
+		//PreviousTime = CurrentTime; 
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -58,7 +59,7 @@ int main()
 		
 		PosText.setString("Frame No" + std::to_string(FrameNo++ % 60));
 		
-		world.Step(Duration.count());
+		world.Step();
 		for (int i=0;i < world.GetEntities().size(); i++)
 			shape[i].setPosition(world.GetEntities()[i]->Position.x,-world.GetEntities()[i]->Position.y);
 

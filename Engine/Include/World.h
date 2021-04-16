@@ -12,6 +12,7 @@ private:
 	//TODO : Implement World Bounds
 	Vector2f Bounds = { 0,0 };
 	std::vector<Entity*> Entities;
+	Vector2i ScreenResolution = {1920,1080};
 public:
 
 	//////////////////////////////////////////////////////
@@ -22,8 +23,7 @@ public:
 	World();
 	World(Vector2f);
 	~World();
-	int Step(int dt);
-	void SetDelta(long);
+	int Step();
 	void AddEntity(Entity*);
 	std::vector<Entity*> GetEntities();
 	Vector2f CalcForce(Entity*);

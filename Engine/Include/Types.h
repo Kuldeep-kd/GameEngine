@@ -1,6 +1,7 @@
 
 #ifndef Types
 #define Types
+#include<chrono>
 
 struct Vector2f
 {
@@ -74,18 +75,29 @@ struct Vector2f
 	}
 };
 
+class Vector2i
+{
+public:
+	int x, y;
+};
+
 class Time
 {
 private:
 	int delta;
+	std::chrono::time_point<std::chrono::steady_clock> CurrentTime, PreviousTime;
+	std::chrono::milliseconds Duration;
 public:
-	Time() : delta(0)
+	Time() : delta(0), Duration(0)
 	{
-
+		PreviousTime = std::chrono::steady_clock::now();
 	}
-	Time(float delta) : delta(delta)
+	void Step()
 	{
-
+		CurrentTime = std::chrono::steady_clock::now();
+		Duration = std::chrono::duration_cast<std::chrono::milliseconds>(CurrentTime - PreviousTime);
+		delta = Duration.count();
+		PreviousTime = CurrentTime;
 	}
 	//Returns time in seconds
 	operator float()
@@ -103,5 +115,6 @@ public:
 		delta = newDelta;
 	}
 };
+
 
 #endif

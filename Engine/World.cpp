@@ -18,24 +18,22 @@ World::~World()
 }
 
 //newDelta : param in milliseconds
-int World::Step(int newDelta)
+int World::Step()
 {
 	
-	SetDelta(newDelta);
+	//SetDelta(newDelta);
 	
 	//if(Delta >= 1000/60)
-		for (Entity* entity : Entities)
-		{
-			CalcPosition(entity);
-		}
+	for (Entity* entity : Entities)
+	{
+		CalcPosition(entity);
+	}
 
+	Delta.Step();
+	std::cout << Delta << std::endl;
 	return 0;
 }
 
-void World::SetDelta(long newDelta)
-{
-	Delta.SetDelta(newDelta);
-}
 
 void World::AddEntity(Entity* NewEntity)
 {
@@ -62,8 +60,8 @@ void World::CalcPosition(Entity* entity)
 {
 	Vector2f accln = CalcForce(entity) / entity->Mass;//{ entity->Mass / Gravity.x , entity->Mass / Gravity.y };
 	entity->Velocity += accln * Delta; //{ entity->Velocity.x + accln.x * delta, entity->Velocity.y + accln.y * delta };
-	entity->Position += entity->Velocity * Delta;
-	std::cout << accln.x<<" "<<accln.y<< " " << entity->Velocity.y<< std::endl;
+	entity->Position += entity->Velocity * Delta * (1920/10); //1920/10 is actually screen resolution / length in meters you assume your world is being represented on screen
+	
 }
 
 void World::SetGravity(Vector2f NewGravity)
