@@ -2,6 +2,6 @@
 
 struct Units
 {
-	Vector2i ScreenResolution;
+	//Vector2i ScreenResolution;
 
 };

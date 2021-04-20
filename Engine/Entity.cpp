@@ -1,59 +1,98 @@
 #include "Include/Entity.h"
-
-Entity::Entity()
+namespace Engine
 {
-	Velocity(0, 0);
-	Position(0, 0);
-	Center(0, 0);
-	Force(0, 0);
-}
 
-void Entity::SetVelocity(Vector2f* NewVelocity)
-{
-	Velocity = *NewVelocity;
-}
+	Entity::Entity()
+	{
+		Velocity = new Vector2f();
+		Position = new Vector2f();
+		Center = new Vector2f();
+		Force = new Vector2f();
+		IsStatic = false;
+	}
 
-void Entity::SetPosition(Vector2f* NewPosition)
-{
-	Position = *NewPosition;
-}
+	Entity::Entity(EntityProperties& Properties)
+	{
+		Velocity = new Vector2f(Properties.Velocity);
+		Position = new Vector2f(Properties.Position);
+		Center = new Vector2f(Properties.Center);
+		Force = new Vector2f(Properties.Force);
+		IsStatic = false;
+	}
 
-void Entity::SetCenter(Vector2f* NewCenter)
-{
-	Center = *NewCenter;
-}
+	void Entity::SetVelocity(Vector2f* NewVelocity)
+	{
+		Velocity = NewVelocity;
+	}
 
-void Entity::SetForce(Vector2f* NewForce)
-{
-	Force += *NewForce;
-}
+	void Entity::SetPosition(Vector2f* NewPosition)
+	{
+		Position = NewPosition;
+	}
 
-void Entity::SetMass(double NewMass)
-{
-	Mass = NewMass;
-}
+	void Entity::SetCenter(Vector2f* NewCenter)
+	{
+		Center = NewCenter;
+	}
 
-Vector2f* Entity::GetVelocity()
-{
-	return &Velocity;
-}
+	void Entity::SetForce(Vector2f* NewForce)
+	{
+		*Force += *NewForce;
+	}
 
-Vector2f* Entity::GetPosition()
-{
-	return &Position;
-}
+	void Entity::SetMass(double NewMass)
+	{
+		Mass = NewMass;
+	}
 
-Vector2f* Entity::GetCenter()
-{
-	return &Center;
-}
+	void Entity::SetCollider(Collider C)
+	{
+	}
 
-Vector2f* Entity::GetForce()
-{
-	return &Force;
-}
+	void Entity::SetStatic(bool NewIsStatic)
+	{
+		if (NewIsStatic)
+		{
+			if(Force != NULL)
+				free(Force);
+			if (Velocity!= NULL)
+				free(Velocity);
+		}
+		else
+		{
+			Velocity = new Vector2f();
+			Force = new Vector2f();
+		}
+	}
 
-double Entity::GetMass()
-{
-	return Mass;
+	Vector2f* Entity::GetVelocity()
+	{
+		return Velocity;
+	}
+
+	Vector2f* Entity::GetPosition()
+	{
+		return Position;
+	}
+
+	Vector2f* Entity::GetCenter()
+	{
+		return Center;
+	}
+
+	Vector2f* Entity::GetForce()
+	{
+		return Force;
+	}
+
+	Collider Entity::GetCollider(Collider C)
+	{
+		return Collider();
+	}
+
+	double Entity::GetMass()
+	{
+		return Mass;
+	}
+
 }

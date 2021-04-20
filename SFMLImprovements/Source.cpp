@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string>
 #include<chrono>
-#include"../Engine/Include/World.h"
+#include "../Engine/Include/Engine.h"
 
 //template <typename T>
 //std::string ToString(T x)
@@ -12,6 +12,7 @@
 //	s = (char*) x;
 //	return s;
 //}
+
 
 int main()
 {
@@ -27,7 +28,9 @@ int main()
 	PosText.setPosition(10, 10);
 	PosText.setCharacterSize(50);
 	PosText.setFillColor(sf::Color::Cyan);
-	World world;
+	Engine::World world;
+	Engine::AABB Collidera({ {10,11} });
+	
 
 	//std::chrono::time_point<std::chrono::steady_clock> PreviousTime;
 
@@ -36,9 +39,10 @@ int main()
 		shape[i].setRadius(5 + rand()%10);
 		shape[i].setFillColor(sf::Color::Green);
 		shape[i].setPosition(950, 440);
-		Entity* e = new Entity();
-		e->Position(rand()%1810, rand()%150);
+		Engine::Entity* e = new Engine::Entity();
+		e->Position->operator()(rand()%1810, rand()%150);
 		e->Mass = 1;
+		e->IsStatic = (i%2==0)? true : false;
 		world.AddEntity(e);
 	}
 
@@ -61,7 +65,7 @@ int main()
 		
 		world.Step();
 		for (int i=0;i < world.GetEntities().size(); i++)
-			shape[i].setPosition(world.GetEntities()[i]->Position.x,-world.GetEntities()[i]->Position.y);
+			shape[i].setPosition(world.GetEntities()[i]->Position->x,-world.GetEntities()[i]->Position->y);
 
 		window.clear();
 		window.draw(PosText);
